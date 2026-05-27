@@ -1,14 +1,35 @@
 from django.contrib.auth import authenticate, login, logout
-from django.db import IntegrityError
+from django.db import IntegrityError, models
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
-from .models import User
+from django import forms
+from .models import User, Post
 
 
 def index(request):
-    return render(request, "network/index.html")
+    if request.method == "POST":
+
+
+        form = PostForm(request.POST)
+
+
+        if form.is_valid():
+
+            form.save()
+            return HttpResponseRedirect(reverse("index"))
+
+        else:
+
+            return render(request, "network/index.html", {
+                "form": form
+            })
+
+    return render(request, "network/index.html", {
+        "form": PostForm()
+    })
+    
+
 
 
 def login_view(request):
@@ -61,3 +82,16 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+# ``````````````````````````````````
+
+
+# forms
+
+
+# ``````````````````````````````````
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ["title", "content"]
