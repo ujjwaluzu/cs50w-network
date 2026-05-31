@@ -8,25 +8,35 @@ from .models import User, Post
 
 
 def index(request):
-    if request.method == "POST":
+    form = PostForm()
+    return render(request, "network/index.html", {
+        "posts": Post.objects.all(),
+        "form": form
+    })
 
-
+def newpost(request):
+    if request.method == "POST" and request.user.is_authenticated:
         form = PostForm(request.POST)
 
 
         if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
 
-            form.save()
+        
+            post.save()
             return HttpResponseRedirect(reverse("index"))
 
         else:
 
             return render(request, "network/index.html", {
-                "form": form
+                "form": form,
+                "posts": Post.objects.all()
             })
 
     return render(request, "network/index.html", {
-        "form": PostForm()
+        "form": PostForm(),
+        "posts": Post.objects.all()
     })
     
 

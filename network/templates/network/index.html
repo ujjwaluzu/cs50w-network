@@ -1,10 +1,24 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-    <h1>Create Post</h1>
-    <form action="{% url 'index' %}" method="post">
+    {% if user.is_authenticated%}
+    <h2>Create Post</h1>
+    <form action="{% url 'newpost' %}" method="post">
         {% csrf_token %}
         {{ form }}
         <input type="submit">
     </form>
+    {% endif %}
+
+
+    <h1>All Posts</h1>
+    <ul>
+    {% for post in posts %}
+        <li>{{post.title}}</li>
+        <li>{{post.author}}</li>
+        <li>{{post.timestamp}}</li>
+        <li>{{post.content}}</li>
+    {% endfor %}
+    </ul>
+
 {% endblock %}
