@@ -1,0 +1,159 @@
+body {
+    background-color: #f5f5f5;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* CREATE POST CARD */
+
+.create-post-card {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+
+    background-color: white;
+
+    border: 1px solid #ddd;
+    border-radius: 12px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.create-post-card h2 {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+
+    padding: 10px;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+
+    font-size: 16px;
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.create-post-card button {
+    padding: 10px 18px;
+
+    border: none;
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.create-post-card button:hover {
+    opacity: 0.9;
+}
+
+
+/* POSTS */
+
+.parent {
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.post {
+    background: white;
+
+    border: 1px solid #ddd;
+    border-radius: 12px;
+
+    padding: 18px;
+    margin-bottom: 20px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.head {
+    margin-bottom: 15px;
+}
+
+.title {
+    font-size: 1.4rem;
+    font-weight: bold;
+
+    margin-bottom: 5px;
+}
+
+.author {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.author a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.author a:hover {
+    text-decoration: underline;
+}
+
+.content {
+    line-height: 1.6;
+    margin-bottom: 15px;
+
+    white-space: pre-wrap;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    border-top: 1px solid #eee;
+
+    padding-top: 12px;
+    margin-top: 10px;
+}
+
+.footer-left {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.action-btn {
+    padding: 8px 14px;
+
+    border: none;
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.action-btn:hover {
+    opacity: 0.9;
+}
+
+.time {
+    margin-top: 10px;
+
+    color: #888;
+    font-size: 0.8rem;
+}
