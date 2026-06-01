@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django import forms
 from .models import User, Post
-
+from django.shortcuts import get_object_or_404
 
 def index(request):
     form = PostForm()
@@ -115,15 +115,9 @@ class PostForm(forms.ModelForm):
 # ``````````````````````````````````
 
 def profile(request, username):
-    user = User.objects.get(username=username)
+    user = get_object_or_404(User, username=username)
     posts = Post.objects.filter(author=user)
-
-    
-
     return render(request, "network/profile.html",{
         "name":user,
         "posts":posts
- 
-    
-     
     })
