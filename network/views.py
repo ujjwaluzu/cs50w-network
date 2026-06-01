@@ -105,3 +105,25 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ["title", "content"]
+
+
+# ``````````````````````````````````
+
+# profile
+
+
+# ``````````````````````````````````
+
+def profile(request, username):
+    user = User.objects.get(username=username)
+    posts = Post.objects.filter(author=user)
+
+    
+
+    return render(request, "network/profile.html",{
+        "name":user,
+        "posts":posts
+ 
+    
+     
+    })
