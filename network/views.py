@@ -116,34 +116,28 @@ class PostForm(forms.ModelForm):
 # ``````````````````````````````````
 
 def profile(request, username):
-    user = get_object_or_404(User, username=username)
-    posts = Post.objects.filter(author=user)
-
-    
     target_user = get_object_or_404(User, username=username)
-    current_user_profile = request.user
-    target_user_profile = target_user
+    posts = Post.objects.filter(author=target_user)
+    if request.user.is_authenticated:
+        current_user = request.user
 
+        is_owner = current_user.id == target_user.id
 
-
-    if current_user_profile == target_user_profile:
+        following = current_user.following.filter(id=target_user.id).exists()
         return render(request, "network/profile.html",{
-            "name":user,
-            "posts":posts
-        })
-
-    if (current_user_profile.following.filter(id=target_user_profile.id).exists()):
-        following = True
+            "name":target_user,
+            "posts":posts,
+            "following": following,
+            "is_owner":is_owner
+                
+            })
     else:
-        following = False
+        return render(request, "network/profile.html",{
+            "name":target_user,
+            "posts":posts,
+                    
+            })
 
-
-    return render(request, "network/profile.html",{
-        "name":user,
-        "posts":posts,
-        "following": following
-            
-        })
 
 
 
