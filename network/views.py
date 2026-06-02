@@ -1,12 +1,13 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError, models
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django import forms
 from .models import User, Post
 from django.shortcuts import get_object_or_404
-
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 def index(request):
     form = PostForm()
     return render(request, "network/index.html", {
@@ -117,7 +118,33 @@ class PostForm(forms.ModelForm):
 def profile(request, username):
     user = get_object_or_404(User, username=username)
     posts = Post.objects.filter(author=user)
+
+    
+    target_user = get_object_or_404(User, username=username)
+    current_user_profile = request.user
+    target_user_profile = target_user
+
+
+
+    if current_user_profile == target_user_profile:
+        return render(request, "network/profile.html",{
+            "name":user,
+            "posts":posts
+        })
+
+    if (current_user_profile.following.filter(id=target_user_profile.id).exists()):
+        following = True
+    else:
+        following = False
+
+
     return render(request, "network/profile.html",{
         "name":user,
-        "posts":posts
-    })
+        "posts":posts,
+        "following": following
+            
+        })
+
+
+
+

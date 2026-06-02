@@ -5,7 +5,11 @@
 
 
 <h1>{{ name }}</h1>
-
+{% if following %}
+<button>unfollow</button>
+{% else %}
+<button>follow</button>
+{% endif %}
 <h3>Followers: {{name.followers.count}}</h3>
 <h3>Following: {{name.following.count}}</h3>
 <h1>All Posts</h1>
