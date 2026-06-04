@@ -39,6 +39,15 @@
         <div class="head">
             <div class="title">{{ post.title }}</div>
 
+        {% if request.user == post.author %}
+                <form action="{% url 'edit' post.id %}">
+                {% csrf_token %}
+                <button type="submit">edit</button>
+                </form>
+        {% endif %}
+
+
+
             <div class="author">
                 <a href="{% url 'profile' post.author %}">
                     @{{ post.author }}

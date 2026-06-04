@@ -174,3 +174,20 @@ def toggle_likes(request, postid):
 
 
     return redirect("index")
+
+@login_required
+def edit(request, postid):
+    post = get_object_or_404(Post, id=postid)
+    if request.user != post.author:
+        return redirect("index")
+    if request.method == "POST":
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect("index")
+    else:
+        form = PostForm(instance=post)
+    return render(request, "network/edit.html",{
+        "form":form,
+        "post": post
+    })

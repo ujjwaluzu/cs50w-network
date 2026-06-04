@@ -1,0 +1,34 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+
+<h3>Debug</h3>
+<p>Title: {{ post.title }}</p>
+<p>Content: {{ post.content }}</p>
+
+
+    <div class="create-post-card">
+    <h2>Edit Post</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="{{ form.title.id_for_label }}">Title</label>
+            {{ form.title }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.content.id_for_label }}">Content</label>
+            {{ form.content }}
+        </div>
+
+        <button type="submit">Save</button>
+    </form>
+    </div>
+
+
+
+
+{% endblock %}
