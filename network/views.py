@@ -124,6 +124,7 @@ def profile(request, username):
         is_owner = current_user.id == target_user.id
 
         following = current_user.following.filter(id=target_user.id).exists()
+
         return render(request, "network/profile.html",{
             "name":target_user,
             "posts":posts,
@@ -158,3 +159,18 @@ def toggle_follow(request, username):
         user_profile.following.add(target_profile)
 
     return redirect('profile', username=username)
+
+
+@login_required
+@require_POST
+def toggle_likes(request, postid):
+    post = get_object_or_404(Post, id=postid)
+    user_profile = request.user
+    if user_profile.liked_posts.filter(id=postid).exists():
+        user_profile.liked_posts.remove(post)
+
+    else:
+        user_profile.liked_posts.add(post)
+
+
+    return redirect("index")
