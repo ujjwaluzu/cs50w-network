@@ -5,18 +5,28 @@
 
 
 <h1>{{ name }}</h1>
-{% if request.user.is_authenticated %}
-{% if not is_owner %}
-{% if following %}
-<button>unfollow</button>
-{% else %}
-<button>follow</button>
-{% endif %}
-{% endif %}
-{% endif %}
+
 
 <h3>Followers: {{name.followers.count}}</h3>
 <h3>Following: {{name.following.count}}</h3>
+
+
+
+{% if request.user.is_authenticated and not is_owner %}
+    <form action="{% url 'toggle_follow' name %}" method="POST">
+        {% csrf_token %}
+
+        {% if following %}
+            <button type="submit">Unfollow</button>
+        {% else %}
+            <button type="submit">Follow</button>
+        {% endif %}
+    </form>
+{% endif %}
+
+
+
+
 <h1>All Posts</h1>
 
 <div class="parent">
