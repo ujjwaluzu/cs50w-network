@@ -140,5 +140,21 @@ def profile(request, username):
 
 
 
+@login_required
+@require_POST
+def toggle_follow(request, username):
+    # Get the profile of the person to follow/unfollow
+    target_profile = get_object_or_404(User, username=username)
+    user_profile = request.user
 
+    # Prevent users from following themselves
+    if user_profile == target_profile:
+        return redirect('profile', username=username)
 
+    # Toggle the relationship status
+    if user_profile.following.filter(id=target_profile.id).exists():
+        user_profile.following.remove(target_profile)
+    else:
+        user_profile.following.add(target_profile)
+
+    return redirect('profile', username=username)
