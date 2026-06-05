@@ -157,3 +157,34 @@ body {
     color: #888;
     font-size: 0.8rem;
 }
+
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 40px 0;
+}
+
+.pagination a,
+.pagination span {
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    background: white;
+}
+
+.pagination a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+}
+
+.pagination a:hover {
+    background: #f3f4f6;
+}
+
+.pagination span {
+    font-weight: bold;
+}

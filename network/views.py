@@ -8,10 +8,19 @@ from .models import User, Post
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+from django.core.paginator import Paginator
+from django.http import JsonResponse
 def index(request):
     form = PostForm()
+    posts = Post.objects.all()
+
+    paginator = Paginator(posts, 10)  # 10 posts per page
+
+    page_number = request.GET.get("page")
+
+    page_obj = paginator.get_page(page_number)
     return render(request, "network/index.html", {
-        "posts": Post.objects.all(),
+        "posts": page_obj,
         "form": form
     })
 
@@ -118,6 +127,13 @@ class PostForm(forms.ModelForm):
 def profile(request, username):
     target_user = get_object_or_404(User, username=username)
     posts = Post.objects.filter(author=target_user)
+ 
+
+    paginator = Paginator(posts, 10)  # 10 posts per page
+
+    page_number = request.GET.get("page")
+
+    page_obj = paginator.get_page(page_number)
     if request.user.is_authenticated:
         current_user = request.user
 
@@ -127,7 +143,7 @@ def profile(request, username):
 
         return render(request, "network/profile.html",{
             "name":target_user,
-            "posts":posts,
+            "posts":page_obj,
             "following": following,
             "is_owner":is_owner
                 
@@ -135,7 +151,7 @@ def profile(request, username):
     else:
         return render(request, "network/profile.html",{
             "name":target_user,
-            "posts":posts,
+            "posts":page_obj,
                     
             })
 
@@ -165,12 +181,11 @@ def toggle_follow(request, username):
 @require_POST
 def toggle_likes(request, postid):
     post = get_object_or_404(Post, id=postid)
-    user_profile = request.user
-    if user_profile.liked_posts.filter(id=postid).exists():
-        user_profile.liked_posts.remove(post)
+    if request.user.liked_posts.filter(id=postid).exists():
+        request.user.liked_posts.remove(post)
 
     else:
-        user_profile.liked_posts.add(post)
+        request.user.liked_posts.add(post)
 
 
     return redirect("index")
@@ -191,3 +206,22 @@ def edit(request, postid):
         "form":form,
         "post": post
     })
+
+
+
+@login_required
+def following(request):
+    posts = Post.objects.filter(
+        author__in=request.user.following.all()
+    )
+
+
+    paginator = Paginator(posts, 10)  # 10 posts per page
+
+    page_number = request.GET.get("page")
+
+    page_obj = paginator.get_page(page_number)
+    return render(request, "network/following.html", {
+        "posts": page_obj
+    })
+    

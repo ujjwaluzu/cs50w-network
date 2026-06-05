@@ -2,33 +2,6 @@
 
 {% block body %}
 
-<!-- form - create post -->
-
-    {% if user.is_authenticated%}
-    <div class="create-post-card">
-    <h2>Create Post</h2>
-
-    <form action="{% url 'newpost' %}" method="post">
-        {% csrf_token %}
-
-        <div class="form-group">
-            <label for="{{ form.title.id_for_label }}">Title</label>
-            {{ form.title }}
-        </div>
-
-        <div class="form-group">
-            <label for="{{ form.content.id_for_label }}">Content</label>
-            {{ form.content }}
-        </div>
-
-        <button type="submit">Create Post</button>
-    </form>
-    </div>
-    {% endif %}
-
-
-<!-- Posts - Displaying all the posts -->
-
 
 <h1>All Posts</h1>
 <div class="pagination">
@@ -108,11 +81,6 @@
     </div>
     {% endfor %}
 </div>
-    
-
-
-
-
 
 <div class="pagination">
 
@@ -133,12 +101,5 @@
     {% endif %}
 
 </div>
-
-
-
-
-
-
-  
 
 {% endblock %}
