@@ -181,14 +181,18 @@ def toggle_follow(request, username):
 @require_POST
 def toggle_likes(request, postid):
     post = get_object_or_404(Post, id=postid)
+
     if request.user.liked_posts.filter(id=postid).exists():
         request.user.liked_posts.remove(post)
-
+        liked = False
     else:
         request.user.liked_posts.add(post)
+        liked = True
 
-
-    return redirect("index")
+    return JsonResponse({
+        "liked": liked,
+        "likes_count": post.likes.count()
+    })
 
 @login_required
 def edit(request, postid):

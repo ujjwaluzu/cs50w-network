@@ -67,16 +67,29 @@
         </div>
 
         <div class="footer">
+                 <span id="likes-count-{{ post.id }}">
+                ❤️ {{ post.likes.count }}
+            </span>
+        <div class="footer-left">
 
-            <div class="footer-left">
-                ❤️ {{ post.likes.count }} Likes
-            </div>
 
-            <div class="footer-right">
-                {% if user.is_authenticated %}
-                    <button class="action-btn">Like</button>
-                {% endif %}
-            </div>
+
+            {% if user.is_authenticated %}
+                <button
+                    class="like-btn"
+                    data-post-id="{{ post.id }}"
+                >
+                    {% if request.user in post.likes.all %}
+                        Unlike
+                    {% else %}
+                        Like
+                    {% endif %}
+                </button>
+            {% endif %}
+
+        </div>
+
+          
 
         </div>
 

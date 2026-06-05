@@ -51,20 +51,27 @@
         </div>
 
         <div class="footer">
-            ❤️ {{ post.likes.count }}
-            <div class="footer-left">
-                {% if request.user.is_authenticated  %}
-                <form action="{% url 'toggle_likes' post.id %}" method="POST">
-                {% csrf_token %}
+                 <span id="likes-count-{{ post.id }}">
+                ❤️ {{ post.likes.count }}
+            </span>
+        <div class="footer-left">
 
-                {% if request.user in post.likes.all  %}
-                <button type="submit">Unlike</button>
-                {% else %}
-                <button type="submit">Like</button>
-                {% endif %}
-                </form>
-                {% endif %}
-            </div>
+
+
+            {% if user.is_authenticated %}
+                <button
+                    class="like-btn"
+                    data-post-id="{{ post.id }}"
+                >
+                    {% if request.user in post.likes.all %}
+                        Unlike
+                    {% else %}
+                        Like
+                    {% endif %}
+                </button>
+            {% endif %}
+
+        </div>
 
           
 
