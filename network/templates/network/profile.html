@@ -6,23 +6,30 @@
 
 <h1>{{ name }}</h1>
 
+<div class="profile-stats">
 
-<h3>Followers: {{name.followers.count}}</h3>
-<h3>Following: {{name.following.count}}</h3>
+    <h3 id="followers-count">
+        Followers: {{ name.followers.count }}
+    </h3>
 
+    <h3>
+        Following: {{ name.following.count }}
+    </h3>
 
+    {% if request.user.is_authenticated and not is_owner %}
+        <button
+            id="follow-btn"
+            data-username="{{ name.username }}"
+        >
+            {% if following %}
+                Unfollow
+            {% else %}
+                Follow
+            {% endif %}
+        </button>
+    {% endif %}
 
-{% if request.user.is_authenticated and not is_owner %}
-    <form action="{% url 'toggle_follow' name %}" method="POST">
-        {% csrf_token %}
-
-        {% if following %}
-            <button type="submit">Unfollow</button>
-        {% else %}
-            <button type="submit">Follow</button>
-        {% endif %}
-    </form>
-{% endif %}
+</div>
 
 
 

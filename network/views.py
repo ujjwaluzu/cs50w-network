@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+import json
 def index(request):
     form = PostForm()
     posts = Post.objects.all()
@@ -160,21 +161,24 @@ def profile(request, username):
 @login_required
 @require_POST
 def toggle_follow(request, username):
-    # Get the profile of the person to follow/unfollow
+
     target_profile = get_object_or_404(User, username=username)
     user_profile = request.user
 
-    # Prevent users from following themselves
     if user_profile == target_profile:
-        return redirect('profile', username=username)
+        return JsonResponse({"error": "Cannot follow yourself"}, status=400)
 
-    # Toggle the relationship status
     if user_profile.following.filter(id=target_profile.id).exists():
         user_profile.following.remove(target_profile)
+        following = False
     else:
         user_profile.following.add(target_profile)
+        following = True
 
-    return redirect('profile', username=username)
+    return JsonResponse({
+        "following": following,
+        "followers_count": target_profile.followers.count()
+    })
 
 
 @login_required
@@ -195,22 +199,28 @@ def toggle_likes(request, postid):
     })
 
 @login_required
-def edit(request, postid):
-    post = get_object_or_404(Post, id=postid)
-    if request.user != post.author:
-        return redirect("index")
-    if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
-        if form.is_valid():
-            form.save()
-            return redirect("index")
-    else:
-        form = PostForm(instance=post)
-    return render(request, "network/edit.html",{
-        "form":form,
-        "post": post
-    })
+@require_POST
+def edit_ajax(request, postid):
 
+    post = get_object_or_404(Post, id=postid)
+
+    if request.user != post.author:
+        return JsonResponse(
+            {"error": "Unauthorized"},
+            status=403
+        )
+
+    data = json.loads(request.body)
+
+    post.title = data["title"]
+    post.content = data["content"]
+
+    post.save()
+
+    return JsonResponse({
+        "title": post.title,
+        "content": post.content
+    })
 
 
 @login_required

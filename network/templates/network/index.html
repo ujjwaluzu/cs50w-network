@@ -31,8 +31,8 @@
 
 
 <h1>All Posts</h1>
-<div class="pagination">
 
+<div class="pagination">
     {% if posts.has_previous %}
         <a href="?page={{ posts.previous_page_number }}">
             Previous
@@ -48,59 +48,69 @@
             Next
         </a>
     {% endif %}
-
 </div>
+
 <div class="parent">
+
     {% for post in posts %}
+
     <div class="post">
 
         <div class="head">
-            <div class="title">{{ post.title }}</div>
 
-        {% if request.user == post.author %}
-                <form action="{% url 'edit' post.id %}">
-                {% csrf_token %}
-                <button type="submit">edit</button>
-                </form>
-        {% endif %}
+            <div
+                class="title"
+                id="title-{{ post.id }}"
+            >
+                {{ post.title }}
+            </div>
 
-
+            {% if request.user == post.author %}
+                <button
+                    class="edit-btn"
+                    data-post-id="{{ post.id }}"
+                >
+                    Edit
+                </button>
+            {% endif %}
 
             <div class="author">
                 <a href="{% url 'profile' post.author %}">
                     @{{ post.author }}
                 </a>
             </div>
+
         </div>
 
-        <div class="content">
+        <div
+            class="content"
+            id="content-{{ post.id }}"
+        >
             {{ post.content }}
         </div>
 
         <div class="footer">
-                 <span id="likes-count-{{ post.id }}">
+
+            <span id="likes-count-{{ post.id }}">
                 ❤️ {{ post.likes.count }}
             </span>
-        <div class="footer-left">
 
+            <div class="footer-left">
 
+                {% if user.is_authenticated %}
+                    <button
+                        class="like-btn"
+                        data-post-id="{{ post.id }}"
+                    >
+                        {% if request.user in post.likes.all %}
+                            Unlike
+                        {% else %}
+                            Like
+                        {% endif %}
+                    </button>
+                {% endif %}
 
-            {% if user.is_authenticated %}
-                <button
-                    class="like-btn"
-                    data-post-id="{{ post.id }}"
-                >
-                    {% if request.user in post.likes.all %}
-                        Unlike
-                    {% else %}
-                        Like
-                    {% endif %}
-                </button>
-            {% endif %}
-
-        </div>
-
-          
+            </div>
 
         </div>
 
@@ -109,17 +119,16 @@
         </div>
 
     </div>
+
     {% empty %}
+
     <div class="post">
         <h3>No posts yet.</h3>
     </div>
+
     {% endfor %}
+
 </div>
-    
-
-
-
-
 
 <div class="pagination">
 

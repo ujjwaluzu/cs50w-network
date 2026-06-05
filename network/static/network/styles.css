@@ -188,3 +188,59 @@ body {
 .pagination span {
     font-weight: bold;
 }
+
+
+.edit-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.edit-textarea {
+    margin-bottom: 0;
+}
+.edit-textarea {
+    width: 100%;
+    box-sizing: border-box;
+
+    min-height: 150px;
+
+    padding: 12px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    resize: vertical;
+
+    font-family: inherit;
+    font-size: 1rem;
+
+    margin-top: 15px;
+}
+
+.edit-input {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 12px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.save-btn,
+.cancel-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 0 !important;
+
+    width: 120px !important;
+  
+
+    line-height: normal !important;
+}
