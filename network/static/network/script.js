@@ -78,7 +78,7 @@ if (followBtn) {
         .then(data => {
 
             document.querySelector("#followers-count")
-                .innerText = `Followers: ${data.followers_count}`;
+                .innerText = `${data.followers_count}`;
 
             followBtn.innerText = data.following
                 ? "Unfollow"

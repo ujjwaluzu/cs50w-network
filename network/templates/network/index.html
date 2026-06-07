@@ -30,7 +30,7 @@
 <!-- Posts - Displaying all the posts -->
 
 
-<h1>All Posts</h1>
+<h1 style="color: white;">All Posts</h1>
 
 <div class="pagination">
     {% if posts.has_previous %}
@@ -58,21 +58,25 @@
 
         <div class="head">
 
-            <div
-                class="title"
-                id="title-{{ post.id }}"
-            >
-                {{ post.title }}
-            </div>
+            <div class="head-top">
 
-            {% if request.user == post.author %}
-                <button
-                    class="edit-btn"
-                    data-post-id="{{ post.id }}"
+                <div
+                    class="title"
+                    id="title-{{ post.id }}"
                 >
-                    Edit
-                </button>
-            {% endif %}
+                    {{ post.title }}
+                </div>
+
+                {% if request.user == post.author %}
+                    <button
+                        class="edit-btn"
+                        data-post-id="{{ post.id }}"
+                    >
+                        Edit
+                    </button>
+                {% endif %}
+
+            </div>
 
             <div class="author">
                 <a href="{% url 'profile' post.author %}">
@@ -91,11 +95,11 @@
 
         <div class="footer">
 
-            <span id="likes-count-{{ post.id }}">
-                ❤️ {{ post.likes.count }}
-            </span>
-
             <div class="footer-left">
+
+                <span id="likes-count-{{ post.id }}">
+                    ❤️ {{ post.likes.count }}
+                </span>
 
                 {% if user.is_authenticated %}
                     <button
@@ -112,10 +116,10 @@
 
             </div>
 
-        </div>
+            <div class="time">
+                {{ post.timestamp|date:"M d, Y H:i" }}
+            </div>
 
-        <div class="time">
-            {{ post.timestamp|date:"M d, Y H:i" }}
         </div>
 
     </div>

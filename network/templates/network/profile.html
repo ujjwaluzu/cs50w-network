@@ -4,30 +4,54 @@
 
 
 
-<h1>{{ name }}</h1>
+<div class="profile-card">
 
-<div class="profile-stats">
+    <div class="profile-header">
 
-    <h3 id="followers-count">
-        Followers: {{ name.followers.count }}
-    </h3>
+        <div>
+            <h1 class="profile-name">
+                @{{ name.username }}
+            </h1>
 
-    <h3>
-        Following: {{ name.following.count }}
-    </h3>
+            <div class="profile-stats">
 
-    {% if request.user.is_authenticated and not is_owner %}
-        <button
-            id="follow-btn"
-            data-username="{{ name.username }}"
-        >
-            {% if following %}
-                Unfollow
-            {% else %}
-                Follow
-            {% endif %}
-        </button>
-    {% endif %}
+                <div class="stat">
+                    <strong>{{ posts.paginator.count }}</strong>
+                    <span>Posts</span>
+                </div>
+
+                <div class="stat">
+                    <strong id="followers-count">
+                        {{ name.followers.count }}
+                    </strong>
+                    <span>Followers</span>
+                </div>
+
+                <div class="stat">
+                    <strong>
+                        {{ name.following.count }}
+                    </strong>
+                    <span>Following</span>
+                </div>
+
+            </div>
+        </div>
+
+        {% if request.user.is_authenticated and not is_owner %}
+            <button
+                id="follow-btn"
+                data-username="{{ name.username }}"
+                class="follow-btn"
+            >
+                {% if following %}
+                    Unfollow
+                {% else %}
+                    Follow
+                {% endif %}
+            </button>
+        {% endif %}
+
+    </div>
 
 </div>
 
@@ -35,7 +59,7 @@
 
 
 
-<h1>All Posts</h1>
+<h1 style="color: white;">All Posts</h1>
 <div class="pagination">
 
     {% if posts.has_previous %}
